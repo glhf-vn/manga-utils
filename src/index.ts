@@ -1,7 +1,8 @@
 import sqlite3 from "sqlite3";
 import { Command } from "commander";
 import { getLatestRegistries } from "./registries.js";
-import { sendNewRegistries } from "./utils/discord.js";
+import { sendNewRegistries, sendReleases } from "./utils/discord.js";
+import { getTodayReleases } from "./utils/glhf.js";
 
 // initialize database
 const db = new sqlite3.Database("./db/main.db", (err) => {
@@ -25,7 +26,7 @@ const program = new Command();
 
 program
   .command("registries <publisherId> [partner]")
-  .description("Scripts for checking registries from `https://ppd.gov.vn/`")
+  .description("Script for checking registries from `https://ppd.gov.vn/`")
   .option("-W, --webhook <webhook URL>", "send Discord webhook")
   .action(async (publisherId, partner, args) => {
     db.get(
@@ -57,6 +58,20 @@ program
         console.table(result);
       }
     );
+  });
+
+program
+  .command("releases")
+  .description("Script for getting releases from manga.GLHF.vn's API")
+  .option("-W, --webhook <webhook URL>", "send Discord webhook")
+  .action(async ({ webhook }) => {
+    const releases = await getTodayReleases();
+
+    if (releases.length == 0) return console.log("No entries, abort");
+
+    if (webhook) await sendReleases(releases, webhook);
+
+    console.table(releases);
   });
 
 program.parse();
