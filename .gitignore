@@ -3,6 +3,3 @@ node_modules/
 
 # Build
 dist/
-
-# SQLite
-db/main.db
