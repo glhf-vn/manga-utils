@@ -32,17 +32,13 @@ export const getLatestRegistries = async (
         break;
       }
 
-      // if there's not a translator
-      if (v[4] == "") break;
-
-      // if partner is specified, and included
-      if (partner && !v[7].includes(partner)) break;
-
-      registries.push({
-        name: v[2],
-        author: v[3],
-        publisherId: publisherId,
-      });
+      // if there's a translator, and partner is specified, and correct
+      if (v[4] != "" && (partner ? v[7].includes(partner) : true))
+        registries.push({
+          name: v[2],
+          author: v[3],
+          publisherId: publisherId,
+        });
     }
 
     page++;

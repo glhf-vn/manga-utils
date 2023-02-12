@@ -70,10 +70,10 @@ export const sendReleases = async (releases: Releases, url: string) => {
               emote.find(({ id }) => publisher.id === id)?.value ?? ""
             } ${publisher.name}`,
             value: entries
-              .map(({ name, price }) => {
+              .map(({ name, edition, price }) => {
                 totalCost += price;
 
-                return `${name}\n`;
+                return `${name}${edition ? ` (${edition})` : ""}\n`;
               })
               .join(""),
             inline: true,

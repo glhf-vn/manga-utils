@@ -11,6 +11,7 @@ type Entry = {
     name: string;
   };
   price: number;
+  edition: string | null;
   image_url: string | null;
   serie_id: number | null;
 };
